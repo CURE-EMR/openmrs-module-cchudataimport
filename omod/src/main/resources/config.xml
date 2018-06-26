@@ -46,17 +46,29 @@
 	 /Required Privileges -->
 
 
-	<!-- Required Global Properties 
 	<globalProperty>
-		<property>@MODULE_ID@.someProperty</property>
-		<defaultValue></defaultValue>
+		<property>cchudataimport.fileNameConceptMap</property>
+		<defaultValue>surgicalNotes:Surgical Notes|visitNotes:Visit Notes</defaultValue>
 		<description>
-			A description of the global property goes here.  The description
-			should explain enough for administrators to understand the purpose
-			and possible values for the global property.
+			Mappings between file names and concepts from which observations should be created
 		</description>
 	</globalProperty>
-	/Required Global Properties -->
+	
+	<globalProperty>
+		<property>cchudataimport.fileNamePersonAttributeMap</property>
+		<defaultValue>careTaker1:careTaker1|careTaker2:careTaker2|phoneContact:phoneContact|referringCo:ReferringCo</defaultValue>
+		<description>
+			Mappings between file names and person attribute types from which person attributes should be created
+		</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>cchudataimport.migratedEncounters</property>
+		<defaultValue></defaultValue>
+		<description>
+			Comma separated encounter ids of the encounters migratred from hydro OS
+		</description>
+	</globalProperty>
 	
 	<!--
 	<dwr>

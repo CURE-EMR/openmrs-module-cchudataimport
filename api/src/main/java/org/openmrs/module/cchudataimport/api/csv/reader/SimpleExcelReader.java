@@ -45,7 +45,7 @@ public class SimpleExcelReader {
 	
 	public void prepareObsImport() throws APIException, IOException {
 		ConceptService cs = Context.getConceptService();
-		String mapping = Context.getAdministrationService().getGlobalProperty("cchuutils.fileNameConceptMap");
+		String mapping = Context.getAdministrationService().getGlobalProperty("cchudataimport.fileNameConceptMap");
 		String[] values = mapping.split("\\|");
 		for (String s : values) {
 			if (s.indexOf(":") > 0) {
@@ -59,14 +59,13 @@ public class SimpleExcelReader {
 	
 	public void preparePersonAttributesImport() throws APIException, IOException {
 		ConceptService cs = Context.getConceptService();
-		String mapping = Context.getAdministrationService().getGlobalProperty("cchuutils.fileNamePersonAttributeMap");
+		String mapping = Context.getAdministrationService().getGlobalProperty("cchudataimport.fileNamePersonAttributeMap");
 		log.error("===================Ndi muri prepare kandi global property nayibonye. Ni: " + mapping);
 		String[] values = mapping.split("\\|");
 		for (String s : values) {
 			if (s.indexOf(":") > 0) {
 				String fileName = s.substring(0, s.indexOf(":"));
-				PersonAttributeType personAttributeType = Context.getPersonService().getPersonAttributeTypeByName(
-				    s.substring(s.indexOf(":") + 1, s.length()));
+				PersonAttributeType personAttributeType = Context.getPersonService().getPersonAttributeTypeByName(s.substring(s.indexOf(":") + 1, s.length()));
 				if (personAttributeType != null) {
 					addPersonAttributes(fileName, personAttributeType);
 				}
@@ -90,8 +89,7 @@ public class SimpleExcelReader {
 				Cell c = nextRow.getCell(1);
 				c.setCellType(Cell.CELL_TYPE_STRING);
 				String obsValue = c.getStringCellValue();
-				if (obsValue != null && obsValue.length() > 0 && !obsValue.equalsIgnoreCase("NULL")
-				        && !obsValue.equalsIgnoreCase("0000-00-00")) {
+				if (obsValue != null && obsValue.length() > 0 && !obsValue.equalsIgnoreCase("NULL") && !obsValue.equalsIgnoreCase("0000-00-00")) {
 					createObs(oldEncounterUUID, obsValue, columnConcept);
 				}
 			}
@@ -135,7 +133,7 @@ public class SimpleExcelReader {
 			}
 			
 		}
-		int obsGroup = Integer.parseInt(Context.getAdministrationService().getGlobalProperty("cchuutils.obsGroupConcept"));
+		int obsGroup = Integer.parseInt(Context.getAdministrationService().getGlobalProperty("cchudataimport.obsGroupConcept"));
 		for (Obs obs2 : e.getObs()) {
 			if (obs2.getConcept().getConceptId() == obsGroup) {
 				o.setObsGroup(obs2);
@@ -202,21 +200,18 @@ public class SimpleExcelReader {
 		
 		PatientService ps = Context.getPatientService();
 		PatientIdentifierType it = ps.getPatientIdentifierTypeByName("Old Identification Number");
-		PersonAttributeType pt = Context.getPersonService().getPersonAttributeTypeByUuid(
-		    "537f22bb-8b4e-4d51-9f54-d3b315a1a2d2");
+		PersonAttributeType pt = Context.getPersonService().getPersonAttributeTypeByUuid("537f22bb-8b4e-4d51-9f54-d3b315a1a2d2");
 		List<PatientIdentifierType> oldIds = new ArrayList<PatientIdentifierType>();
 		oldIds.add(it);
 		
-		List<PatientIdentifier> identifiers = Context.getPatientService().getPatientIdentifiers(null, oldIds, null, null,
-		    null); //Do we really have to load all patients!!
+		List<PatientIdentifier> identifiers = Context.getPatientService().getPatientIdentifiers(null, oldIds, null, null, null); //Do we really have to load all patients!!
 		
 		while (iterator.hasNext()) {
 			try {
 				Row nextRow = iterator.next();
 				String patientUUID = nextRow.getCell(0).getStringCellValue();
 				String registrationDiagnosis = nextRow.getCell(1).getStringCellValue();
-				if (registrationDiagnosis != null && registrationDiagnosis.length() > 0
-				        && !registrationDiagnosis.equalsIgnoreCase("NULL")) {
+				if (registrationDiagnosis != null && registrationDiagnosis.length() > 0 && !registrationDiagnosis.equalsIgnoreCase("NULL")) {
 					for (PatientIdentifier patientIdentifier : identifiers) {
 						if (patientIdentifier.getIdentifier().equalsIgnoreCase(patientUUID)) {
 							Patient p = patientIdentifier.getPatient();
@@ -251,10 +246,8 @@ public class SimpleExcelReader {
 		List<PatientIdentifierType> oldIds = new ArrayList<PatientIdentifierType>();
 		oldIds.add(it);
 		
-		List<PatientIdentifier> identifiers = Context.getPatientService().getPatientIdentifiers(null, oldIds, null, null,
-		    null); //Do we really have to load all patients!!
-		log.error("================================Ndi muri addPersonAttributes kandi indentifiers nazibonye. Nabonye "
-		        + identifiers.size());
+		List<PatientIdentifier> identifiers = Context.getPatientService().getPatientIdentifiers(null, oldIds, null, null, null); //Do we really have to load all patients!!
+		log.error("================================Ndi muri addPersonAttributes kandi indentifiers nazibonye. Nabonye " + identifiers.size());
 		while (iterator.hasNext()) {
 			try {
 				Row nextRow = iterator.next();
@@ -274,15 +267,13 @@ public class SimpleExcelReader {
 					personAttributeValue = c1.getStringCellValue();
 				}
 				
-				if (patientUUID != null && patientUUID.length() > 0 && personAttributeValue != null
-				        && personAttributeValue.length() > 0 && !personAttributeValue.equalsIgnoreCase("NULL")) {
+				if (patientUUID != null && patientUUID.length() > 0 && personAttributeValue != null && personAttributeValue.length() > 0 && !personAttributeValue.equalsIgnoreCase("NULL")) {
 					for (PatientIdentifier patientIdentifier : identifiers) {
 						if (patientIdentifier.getIdentifier().equalsIgnoreCase(patientUUID)) {
 							Patient p = patientIdentifier.getPatient();
 							PersonAttribute pa = new PersonAttribute(personAttributeType, personAttributeValue);
 							p.getPerson().addAttribute(pa);
-							log.error("======================================= " + patientUUID + "============="
-							        + personAttributeType.getName());
+							log.error("======================================= " + patientUUID + "=============" + personAttributeType.getName());
 							Context.getPersonService().savePerson(p);
 						}
 					}
@@ -308,10 +299,8 @@ public class SimpleExcelReader {
 		List<PatientIdentifierType> oldIds = new ArrayList<PatientIdentifierType>();
 		oldIds.add(it);
 		
-		PatientIdentifierType cureId = Context.getPatientService().getPatientIdentifierTypeByUuid(
-		    "81433852-3f10-11e4-adec-0800271c1b75");
-		List<PatientIdentifier> identifiers = Context.getPatientService().getPatientIdentifiers(null, oldIds, null, null,
-		    null); //Do we really have to load all patients!!
+		PatientIdentifierType cureId = Context.getPatientService().getPatientIdentifierTypeByUuid("81433852-3f10-11e4-adec-0800271c1b75");
+		List<PatientIdentifier> identifiers = Context.getPatientService().getPatientIdentifiers(null, oldIds, null, null, null); //Do we really have to load all patients!!
 		while (iterator.hasNext()) {
 			try {
 				Row nextRow = iterator.next();
@@ -414,8 +403,7 @@ public class SimpleExcelReader {
 	
 	public void addSurgicalProcedureObsGroup() {
 		List<Encounter> encounters = new ArrayList<Encounter>();
-		String[] encounterIds = Context.getAdministrationService().getGlobalProperty("cchuutils.migratedEncounters")
-		        .split(",");
+		String[] encounterIds = Context.getAdministrationService().getGlobalProperty("cchudataimport.migratedEncounters").split(",");
 		for (String string : encounterIds) {
 			Encounter e = Context.getEncounterService().getEncounter(Integer.parseInt(string));
 			if (e.getObs().size() > 3) { //if the encounter has more than one obs, it is an encounter from the rugical form

@@ -44,35 +44,35 @@ public class CCHUDataImportController {
 	 * 
 	 * @return String form view name
 	 */
-	@RequestMapping("/module/cchucsvutils/addObs")
+	@RequestMapping("/module/cchudataimport/addObs")
 	public String onGet() throws IOException {
 		SimpleExcelReader r = new SimpleExcelReader();
 		r.prepareObsImport();
 		return VIEW;
 	}
 	
-	@RequestMapping("/module/cchucsvutils/addDates")
+	@RequestMapping("/module/cchudataimport/addDates")
 	public String addDate() throws IOException {
 		SimpleExcelReader r = new SimpleExcelReader();
 		r.addDateofBirth();
 		return VIEW;
 	}
 	
-	@RequestMapping("/module/cchucsvutils/addIds")
+	@RequestMapping("/module/cchudataimport/addIds")
 	public String addIds() throws IOException {
 		SimpleExcelReader r = new SimpleExcelReader();
 		r.addIds();
 		return VIEW;
 	}
 	
-	@RequestMapping("/module/cchucsvutils/addRegistrationDiagnosis")
+	@RequestMapping("/module/cchudataimport/addRegistrationDiagnosis")
 	public String addRegistrationDiagnosis() throws IOException {
 		SimpleExcelReader r = new SimpleExcelReader();
 		r.addRegistrationDiagnosis();
 		return VIEW;
 	}
 	
-	@RequestMapping("/module/cchucsvutils/addPersonAttributes")
+	@RequestMapping("/module/cchudataimport/addPersonAttributes")
 	public String addPersonAttributes() throws IOException {
 		log.error("=======================Ndi muri controller");
 		SimpleExcelReader r = new SimpleExcelReader();
@@ -80,21 +80,21 @@ public class CCHUDataImportController {
 		return VIEW;
 	}
 	
-	@RequestMapping("/module/cchucsvutils/saveAllPatients")
+	@RequestMapping("/module/cchudataimport/saveAllPatients")
 	public String saveAllPatients() throws IOException {
 		SimpleExcelReader r = new SimpleExcelReader();
 		r.saveAllPatients();
 		return VIEW;
 	}
 	
-	@RequestMapping("/module/cchucsvutils/saveAllNullDoBs")
+	@RequestMapping("/module/cchudataimport/saveAllNullDoBs")
 	public String saveAllNullDoBs() throws IOException {
 		SimpleExcelReader r = new SimpleExcelReader();
 		r.saveAllNullDoBs();
 		return VIEW;
 	}
 	
-	@RequestMapping("/module/cchucsvutils/addSurgicalProcedureObsGroup")
+	@RequestMapping("/module/cchudataimport/addSurgicalProcedureObsGroup")
 	public String addSurgicalProcedureObsGroup() throws IOException {
 		SimpleExcelReader r = new SimpleExcelReader();
 		r.addSurgicalProcedureObsGroup();
