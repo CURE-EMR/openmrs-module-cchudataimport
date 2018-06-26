@@ -1,9 +1,9 @@
-${moduleName}
+CCHU Data Import
 ==========================
 
 Description
 -----------
-This is a very basic module which can be used as a starting point in creating a new module.
+CURE Children's Hospital of Uganda -data import module.
 
 Building from Source
 --------------------
